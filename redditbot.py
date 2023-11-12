@@ -115,17 +115,23 @@ class RedditBot:
         :param comments: A list of tuples containing the comment content and upvotes.
         """
         comment = model.generate_comment(title, post_text, comments)
-        try:
-            submission.reply(comment)
-        except RedditAPIException as e:
-            if e.error_type == "RATELIMIT":
-                print("Rate limit exceeded. Sleeping for 7 minutes.")
-                sleep(7 * 60)
+        exit = False
+        while not exit:
+            try:
                 submission.reply(comment)
-            else:
-                raise e
+                exit = True
+            except RedditAPIException as e:
+                if e.error_type == "RATELIMIT":
+                    # sleep for the time specified in the error message
+                    sleep(int(e.message.split(" ")[-5]) * 60)
+                elif e.error_type == "THREAD_LOCKED":
+                    print("Thread locked. Skipping.")
+                    exit = True
+                else:
+                    print(e.error_type)
+                    exit = True
 
-        print(f"Replied to {submission.title} with {comment}")
+        print(f"Replied to '{submission.title}' with '{comment}'")
         self.log_commented_post(submission.id)
 
     def load_commented_posts(self) -> list[str]:
@@ -165,10 +171,10 @@ class RedditBot:
             self.generate_comment(
                 submission, post_title, text_content, comment_content_and_upvotes
             )
-            sleep(randint(1, 5))
+            sleep(randint(15, 50))
 
 
 # UNCOMMENT THIS CODE AFTER FILLING IN THE PARAMETERS OF THE REDDIT BOT, MAKE SURE TO FILL THE OPEN AI API KEY IN THE MODEL.PY FILE AS WELL.
 # if __name__ == "__main__":
-# reddit_bot = RedditBot("client_id", "client_secret", "username", "password")
+# reddit_bot = RedditBot(your_client_id, your_client_secret, your_username, your_password)
 # reddit_bot.run()
