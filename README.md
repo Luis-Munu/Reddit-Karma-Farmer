@@ -1,5 +1,7 @@
 # 🤖 Reddit Karma Farmer
 
+![proof](https://github.com/Valkam-Git/Reddit-Karma-Farmer/assets/82890199/cbb9e7fa-3942-450b-bda4-5c99b0c3462e) <kbd>Results of running the bot for a few hours</kbd>
+
 A Python bot that uses OpenAI's GPT-3 API and PRAW library to post comments on trending Reddit topics based on the title, content, and comments of the original post.
 
 ## 🚀 Getting Started
