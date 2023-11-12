@@ -122,7 +122,7 @@ class RedditBot:
                 exit = True
             except RedditAPIException as e:
                 if e.error_type == "RATELIMIT":
-                    # sleep for the time specified in the error message
+                    # Sleep for the time specified in the error message
                     sleep(int(e.message.split(" ")[-5]) * 60)
                 elif e.error_type == "THREAD_LOCKED":
                     print("Thread locked. Skipping.")

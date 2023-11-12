@@ -17,7 +17,7 @@ def generate_comment(
     """
 
     comments = sorted(comments, key=lambda comment: comment[1], reverse=True)
-    if len(comments) > 3:
+    if len(comments) >= 4:
         comments = comments[:4]
     else:
         comments = comments[: len(comments)]
